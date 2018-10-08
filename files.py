@@ -12,9 +12,6 @@ for i in range(0, len_data-1):
     plt.plot(x, y, color = 'b')
 
 
-
-
-
 #data_1 = np.array([data[x][0] for x in range(len(data))])
 #data_2 = np.array([data[x][1] for x in range(len(data))])
 

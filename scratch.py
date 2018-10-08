@@ -7,7 +7,7 @@ import math
 
 
 
-x_data = np.genfromtxt('../Data/S2_04_002.dat', dtype ='float')
+x_data = np.genfromtxt('Data/S2_04_002.dat', dtype ='float')
 len_data = len(x_data)
 #data = list(map(abs, data))
 x_data.sort()
