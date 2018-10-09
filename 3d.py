@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-data= np.genfromtxt(r'../Data/S2_02_003.dat', dtype = 'float')
+data= np.genfromtxt(r'Data/S2_02_003.dat', dtype = 'float')
 data_len=len(data)
 x=[i for i in range(data_len)]
 data_1 = np.array([data[x][0] for x in range(len(data))])

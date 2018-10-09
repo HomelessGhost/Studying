@@ -8,6 +8,7 @@ import scipy.special as sc
 import scipy.stats as st
 import scipy.integrate as integ
 import matplotlib.pyplot as plt
+from scipy import stats
 
 
 # In[60]:
@@ -39,6 +40,7 @@ def sign_test_2samp(samp1, samp2, alt='two-sided'):
     return M, p
 
 
+# Корреляция по Пирсону
 def correlate(samp1, samp2):
     if len(samp1) != len(samp2):
         return "error data different range"
@@ -63,7 +65,7 @@ def sort_un(arr):
 
     return arr
 
-
+# Корреляция по Спирмену
 def correlate2(samp1, samp2):
     united=[] # Список для объединённой выборки
     for i in range(len(samp1)):
@@ -76,16 +78,16 @@ def correlate2(samp1, samp2):
 
     for i in range(len(united)):
         if united[i][0] == "x":
-            rang_x[united[i][2]] = i+1
+            rang_x[united[i][2]] = i + 1
         if united[i][0] == "y":
-            rang_y[united[i][2]] = i+1
+            rang_y[united[i][2]] = i + 1
 
     rang_x = np.array(rang_x)
     rang_y = np.array(rang_y)
     return correlate(rang_x, rang_y)
     
 
-name1, name2 = r"../Data/S_004_001.dat", r"../Data/S_004_002.dat"
+name1, name2 = r"Data/S_004_001.dat", r"Data/S_004_002.dat"
 
 file = open(name1, "r")
 samp1 = np.genfromtxt(name1, dtype ='float')
@@ -98,7 +100,7 @@ file.close()
 print(sign_test_2samp(samp1, samp2))
 
 
-name3, name4 = r"../Data/S_004_003.dat", r"../Data/S_004_004.dat"
+name3, name4 = r"Data/S_004_003.dat", r"Data/S_004_004.dat"
 file = open(name3, "r")
 samp3 = np.genfromtxt(name3, dtype='float')
 file.close()
@@ -111,15 +113,15 @@ print(sign_test_2samp(samp1, samp3, 'less'))
 
 print(sign_test_2samp(samp1, samp3, 'greater'))
 
-print(st.mannwhitneyu(samp1, samp2))
+print('Mann  ', st.mannwhitneyu(samp1, samp2))
 
 alfa = []
 beta = []
 for i in range(999):
-    alfa.append(float(np.random.exponential(2,1)))
-    beta.append(float(np.random.exponential(3,1)))
-alfa.append(10.0)
-beta.append(10.0)
+    alfa.append(float(np.random.rand()))
+    beta.append(float(np.random.rand()))
+alfa.append(-60.0)
+beta.append(+180.0)
 alfa = np.array(alfa)
 beta = np.array(beta)
 
@@ -129,4 +131,5 @@ print('Спирмен: ', correlate2(alfa, beta))
 
 
 
-
+print(stats.pearsonr(alfa, beta))
+print(stats.spearmanr(alfa, beta))
