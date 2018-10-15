@@ -69,18 +69,18 @@ def my_cdf(x_data, color):
 
 def hw_6_1():
     D = []
-    for i in range(10000):
+    for i in range(100000):
         smp = np.random.normal(5, 1, 1000)
         stat = exp_statistics(smp)
         D.append(stat)
 
     sample = np.random.normal(5, 1, 1000)
-    bootstrap_D = do_bootstrap(sample, 10000, exp_statistics)
+    bootstrap_D = do_bootstrap(sample, 100000, exp_statistics)
 
-    # plt.hist(D, bin_number(10000), color='red', alpha=0.5)
-    # plt.hist(bootstrap_D, bin_number(10000), color='blue', alpha=0.5)
-    cdf_print(D, 'b.')
-    cdf_print(bootstrap_D, 'r.')
+    plt.hist(D, bin_number(100000), color='red', alpha=0.5)
+    plt.hist(bootstrap_D, bin_number(100000), color='blue', alpha=0.5)
+    # cdf_print(D, 'b.')
+    # cdf_print(bootstrap_D, 'r.')
 
     print('Квантиль 0.025: ', find_quantile(bootstrap_D, 0.025))
     print('Квантиль 0.975: ', find_quantile(bootstrap_D, 0.975))
@@ -96,11 +96,11 @@ def hw_6_2():
         D.append(stat)
 
     sample = np.random.uniform(0, 1, 1000)
-    bootstrap_D = do_bootstrap(sample, 1000, lambda array: np.max(array))
+    bootstrap_D = do_bootstrap(sample, 10000, lambda array: np.max(array))
 
-    sns.distplot(D)
-    # plt.hist(D, bin_number(10000), color='red', alpha=0.5)
-    # plt.hist(bootstrap_D, bin_number(10000), color='blue', alpha=0.5)
+    # sns.distplot(D)
+    plt.hist(D, bin_number(10000), color='red', alpha=0.5)
+    plt.hist(bootstrap_D, bin_number(10000), color='blue', alpha=0.5)
     # my_cdf(D, 'blue')
     # my_cdf(bootstrap_D, 'red')
 
