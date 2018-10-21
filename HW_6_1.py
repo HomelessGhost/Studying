@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from matplotlib import mlab
 
 
 def bin_number(n):
@@ -19,6 +20,11 @@ def cdf_print(x, ar):
 
 def exp_statistics(sample):
     return np.exp(sample.mean())
+
+
+def magic(x):
+#    return 1 / x
+    return x**50
 
 
 def do_bootstrap(sample, accuracy, stat_func):
@@ -70,17 +76,16 @@ def my_cdf(x_data, color):
 def hw_6_1():
     D = []
     for i in range(100000):
-        smp = np.random.normal(5, 1, 1000)
+        smp = np.random.normal(5, 1, 100)
         stat = exp_statistics(smp)
         D.append(stat)
 
-    sample = np.random.normal(5, 1, 1000)
+    sample = np.random.normal(5, 1, 100)
     bootstrap_D = do_bootstrap(sample, 100000, exp_statistics)
-
-    plt.hist(D, bin_number(100000), color='red', alpha=0.5)
-    plt.hist(bootstrap_D, bin_number(100000), color='blue', alpha=0.5)
-    # cdf_print(D, 'b.')
-    # cdf_print(bootstrap_D, 'r.')
+    # plt.hist(D, bin_number(100000), color='red', alpha=0.5)
+    # plt.hist(bootstrap_D, bin_number(100000), color='blue', alpha=0.5)
+    cdf_print(D, 'b.')
+    cdf_print(bootstrap_D, 'r.')
 
     print('Квантиль 0.025: ', find_quantile(bootstrap_D, 0.025))
     print('Квантиль 0.975: ', find_quantile(bootstrap_D, 0.975))
@@ -91,18 +96,23 @@ def hw_6_1():
 def hw_6_2():
     D = []
     for i in range(10000):
-        smp = np.random.uniform(0, 1, 1000)
+        smp = np.random.uniform(0, 1, 50)
         stat = np.max(smp)
         D.append(stat)
 
-    sample = np.random.uniform(0, 1, 1000)
+    sample = np.random.uniform(0, 1, 50)
     bootstrap_D = do_bootstrap(sample, 10000, lambda array: np.max(array))
 
+    xlist = mlab.frange(0, 1, 0.001)
+    ylist = [magic(x) for x in xlist]
+
     # sns.distplot(D)
-    plt.hist(D, bin_number(10000), color='red', alpha=0.5)
-    plt.hist(bootstrap_D, bin_number(10000), color='blue', alpha=0.5)
-    # my_cdf(D, 'blue')
-    # my_cdf(bootstrap_D, 'red')
+    # plt.hist(D, bin_number(10000), color='red', alpha=0.5)
+    # plt.hist(bootstrap_D, bin_number(10000), color='blue', alpha=0.5)
+    my_cdf(D, 'blue')
+    my_cdf(bootstrap_D, 'red')
+    plt.plot(xlist, ylist)
+
 
     print('Квантиль 0.025: ', find_quantile(bootstrap_D, 0.025))
     print('Квантиль 0.975: ', find_quantile(bootstrap_D, 0.975))
