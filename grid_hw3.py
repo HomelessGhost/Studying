@@ -3,32 +3,29 @@ import matplotlib.pyplot as plt
 import scipy.integrate as integrate
 
 
-def calc_analit(x, t, N, n, sum_number):
-    Pi = np.pi
-    exp = np.exp
-    sin = np.sin
-    cos = np.cos
-
-    w = (3 * N + 2) * sin((1 / 2) * Pi * t) * x ** 2 / (N + n - 60) + 2 * N * (t - 1) / (N + 3)
-
+def calc_analit(x,t,N,n,sum_number):
+    Pi=np.pi
+    exp=np.exp
+    sin=np.sin
+    cos=np.cos
+    
+    w = (3*N+2)*sin((1/2)*Pi*t)*x**2/(N+n-60)+2*N*(t-1)/(N+3)
+    
     v = 0
-    for i in range(1, sum_number):
-        fi_n = 4 * N * (cos(Pi * i) - 1) / ((N + 3) * Pi * i)
-        v_n = fi_n * np.exp(-(Pi * i) ** 2 * t) + \
-              integrate.quad(lambda x: calc_g_n(x, i) * exp(-(Pi * i) ** 2 * (t - x)), 0, t)[0]
-        v = v + v_n
-
-    return w + v
-
-
-def calc_g_n(t, i):
-    Pi = np.pi
-    exp = np.exp
-    sin = np.sin
-    cos = np.cos
-
-    return -cos((1 / 2) * Pi * t) * (
-                cos(Pi * i) * Pi ** 2 * i ** 2 - 2 * Pi * i * sin(Pi * i) - 2 * cos(Pi * i) + 2) / (Pi ** 2 * i ** 3)
+    for q in range(1,sum_number):
+        v_n = sin(Pi*q*x)*calc_g_n(t,q,N,n)*(1-exp(-(Pi*q)**2*t))/(Pi*q)**2
+        v = v+v_n
+        
+    return w+v
+ 
+    
+def calc_g_n(t,q,N,n):
+    Pi=np.pi
+    exp=np.exp
+    sin=np.sin
+    cos=np.cos
+    
+    return ((3*N+2)/N-(3*N+2)/(N+n-60))*cos((1/2)*Pi*t)*(-Pi**2*q**2*cos(Pi*q)+2*Pi*q*sin(Pi*q)+2*cos(Pi*q)-2)/(Pi**2*q**3)
 
 
 def solveExplicit(D, f, mu, b0, b1, a, b, h, T, tau):
@@ -189,14 +186,14 @@ B = list(np.arange(0, T, tau))     # Time grid
 
 u_analit = []
 for i in range(0, len(A)):
-    u_analit.append( calc_analit( A[i], 0.01, N, n, 100) )
+    u_analit.append( calc_analit( A[i], 0.5, N, n, 100) )
 
 
 
 plt.style.use(['seaborn-darkgrid', 'dark_background'])
 
 line1, = plt.plot(A, u_analit, 'g', label='Аналитическое решение')
-line2, = plt.plot(A, u[ 1 ], 'ro', markersize=3, label='Явное решение')
+line2, = plt.plot(A, u[ int(len(B)/2) ], 'ro', markersize=3, label='Явное решение')
 
 plt.legend(handles=[line2, line1])
 
